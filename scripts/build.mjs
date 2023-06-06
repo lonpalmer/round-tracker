@@ -1,5 +1,6 @@
 import * as esbuild from 'esbuild';
 import { buildFoundryConfig } from './foundry_config.mjs';
+import { generateRunningVersion } from './running_version.mjs';
 
 const options = {
     entryPoints: ['src/main.mjs'],
@@ -12,5 +13,6 @@ const options = {
     sourcemap: true
 }
 
+await generateRunningVersion();
 await esbuild.build(options);
 await buildFoundryConfig();
