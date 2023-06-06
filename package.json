@@ -1,11 +1,12 @@
 {
-  "version": "0.0.0-alpha.0",
+  "version": "0.0.1",
   "dependencies": {
     "esbuild": "0.17.19",
     "mkdirp": "^3.0.1"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
     "prepublish": "npx prettier --write src"
   },
   "devDependencies": {
