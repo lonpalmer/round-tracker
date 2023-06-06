@@ -5,6 +5,11 @@
     "mkdirp": "^3.0.1"
   },
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "prepublish": "npx prettier --write src"
+     
+  },
+  "devDependencies": {
+    "prettier": "2.8.8"
   }
 }
