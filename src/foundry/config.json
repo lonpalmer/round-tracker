@@ -1,0 +1,11 @@
+{
+    "id": "round-tracker",
+    "name": "Round Tracker",
+    "description": "A simple round tracker for the GM to keep track of initiative and rounds.",
+    "version": "__VERSION__",
+    "compatible": {
+        "minimum": "11",
+        "maximum": "11",
+        "validated": "11.0.300"
+    }
+}
