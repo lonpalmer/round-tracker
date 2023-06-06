@@ -2,7 +2,6 @@ import * as esbuild from "esbuild";
 import { buildFoundryConfig } from "./foundry_config.mjs";
 import { generateRunningVersion } from "./running_version.mjs";
 import * as fs from "fs/promises";
-import { log } from "./logger.mjs";
 
 // set a watch var to true if the --watch flagg is passed
 const watch = process.argv.includes("--watch");
@@ -28,6 +27,6 @@ if (!watch) {
   await esbuild.build(options);
 } else {
   const ctx = await esbuild.context(options);
-  log("Watching for changes...");
+  console.log("Watching for changes...");
   await ctx.watch();
 }
