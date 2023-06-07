@@ -7,8 +7,9 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "watch": "node scripts/build.mjs --watch",
-    "prepublish": "npx prettier --write src",
+    "start": "node scripts/build.mjs --watch",
+    "pretty:write": "prettier --write ./",
+    "pretty:check": "prettier --check ./",
     "test": "jasmine"
   },
   "devDependencies": {
