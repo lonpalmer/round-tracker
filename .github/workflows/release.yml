@@ -31,9 +31,5 @@ jobs:
           body: ${{ github.event.release.body }}
           draft: false
           prerelease: false
-          artifacts: |
-            dist.zip
-            dist/module.json
-            LICENSE
-            README.md
+          artifacts: "dist.zip dist/module.json LICENSE README.md"
           token: ${{ secrets.GITHUB_TOKEN }}
