@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Zip dist directory
-        run: zip -r dist.zip dist
+        run: zip -r ./dist.zip dist/ LICENSE README.md
       # Create a release for this specific version
       - name: Update Release with Files
         id: create_version_release
@@ -31,5 +31,5 @@ jobs:
           body: ${{ github.event.release.body }}
           draft: false
           prerelease: false
-          artifacts: "dist.zip dist/module.json LICENSE README.md"
+          artifacts: "./dist.zip ./dist/module.json ./LICENSE ./README.md"
           token: ${{ secrets.GITHUB_TOKEN }}
