@@ -75,7 +75,7 @@ describe("round_events", () => {
 
     let events1 = round_events.listEvents(mocDoc);
 
-    let removeId = events1.find(e => e.round === 1)?.id;
+    let removeId = events1.find((e) => e.round === 1)?.id;
 
     await round_events.removeEvent(removeId, mocDoc);
 
@@ -84,13 +84,5 @@ describe("round_events", () => {
     expect(events1.length).toBe(2);
     expect(events2.length).toBe(1);
     expect(events2[0].round === 2);
-
-
-
-
-
-
   });
-
-
 });
