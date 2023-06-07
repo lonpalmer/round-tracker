@@ -2,7 +2,8 @@
   "version": "0.0.13",
   "dependencies": {
     "esbuild": "0.17.19",
-    "mkdirp": "^3.0.1"
+    "mkdirp": "^3.0.1",
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
