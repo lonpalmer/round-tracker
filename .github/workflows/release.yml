@@ -32,7 +32,7 @@ jobs:
         with:
           name: ${{ github.ref }}
           # tag: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
+          # body: ${{ github.event.release.body }}
           draft: false
           prerelease: false
           artifacts: "dist.zip,dist/module.json,LICENSE,README.md"
