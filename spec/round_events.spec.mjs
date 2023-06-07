@@ -65,4 +65,32 @@ describe("round_events", () => {
     expect(allEvents.filter((ev) => ev.fired === false).length).toBe(3);
     expect(allEvents.filter((ev) => ev.round === 2).length).toBe(3);
   });
+
+  // Test removeEvent
+  it("removeEvent", async () => {
+    const mocDoc = makeMocDoc();
+
+    await round_events.addEvent(1, "round 1", mocDoc);
+    await round_events.addEvent(2, "round 2", mocDoc);
+
+    let events1 = round_events.listEvents(mocDoc);
+
+    let removeId = events1.find(e => e.round === 1)?.id;
+
+    await round_events.removeEvent(removeId, mocDoc);
+
+    let events2 = round_events.listEvents(mocDoc);
+
+    expect(events1.length).toBe(2);
+    expect(events2.length).toBe(1);
+    expect(events2[0].round === 2);
+
+
+
+
+
+
+  });
+
+
 });
