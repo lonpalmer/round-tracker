@@ -8,12 +8,14 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "watch": "node scripts/build.mjs --watch",
-    "prepublish": "npx prettier --write src"
+    "prepublish": "npx prettier --write src",
+    "test": "jasmine"
   },
   "devDependencies": {
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "jasmine": "^5.0.0",
     "prettier": "2.8.8"
   }
 }

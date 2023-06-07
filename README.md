@@ -1,2 +1,2 @@
 # round-tracker
-A Round Tracker for Foundry VTT
+A Round Tracker for Foundry VTT.

@@ -10,7 +10,7 @@ const EVENTS_KEY = "events";
 
 /**
  * @typedef {Object} RoundEvent The data object for a round event.
- * @property {number} id The unique ID of the event.
+ * @property {String} id The unique ID of the event.
  * @property {boolean} fired Whether the event has fired.
  * @property {number} round The round number of the event.
  * @property {string} text Text to put into chat when this event occurs.
@@ -45,7 +45,7 @@ async function setEvents(events, document) {
 export function listEvents(document) {
     let events = getEvents(document);
     
-    let eventClone = events.map(ev => {return {...ev}});
+    return events.map(ev => {return {...ev}});
 }
 
 /**
@@ -67,16 +67,17 @@ export async function addEvent(round, text, document) {
     const events = getEvents(document);
     events.push(event);
     await setEvents(events, document);
+    
 
     return listEvents(document);
 }
 
-function getEvents(round, fired, document) {
+export function findEvents(round, fired, document) {
     return getEvents(document).filter(event => event.round === round && event.fired === fired);
 }
 
-async function fireEvents(round, document) {
-    const events = getEvents(round, false, document);
+export async function fireEvents(round, document) {
+    const events = findEvents(round, false, document);
     for (const event of events) {
         event.fired = true;
     }
@@ -84,7 +85,13 @@ async function fireEvents(round, document) {
     return events;
 }
 
-async function fireEvent(id, document) {
+/**
+ * Fire a specific event. 
+ * @param {string} id ID of the event to remove
+ * @param {Object} document The document containing the events.
+ * @returns {boolean} Whether the event was fired.
+ */
+export async function fireEvent(id, document) {
     const events = getEvents(document);
     const event = events.find(event => event.id === id);
     if (event) {
@@ -94,7 +101,13 @@ async function fireEvent(id, document) {
     return true;
 }
 
-async function removeEvent(id, document) {
+/**
+ * 
+ * @param {string} id ID of the event to remove
+ * @param {Object} document The document containing the events.
+ * @returns {boolean} Whether the event was removed.
+ */
+export async function removeEvent(id, document) {
     const events = getEvents(document);
     const index = events.findIndex(event => event.id === id);
     if (index >= 0) {
