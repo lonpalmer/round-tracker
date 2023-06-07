@@ -2,7 +2,6 @@ import * as esbuild from "esbuild";
 import { buildFoundryConfig } from "./foundry_config.mjs";
 import { generateRunningVersion } from "./running_version.mjs";
 
-
 // set a watch var to true if the --watch flagg is passed
 const watch = process.argv.includes("--watch");
 
