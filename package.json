@@ -8,8 +8,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node scripts/build.mjs --watch",
-    "pretty:write": "prettier --write ./",
-    "pretty:check": "prettier --check ./",
+    "prettier:write": "prettier --write ./",
+    "prettier:check": "prettier --check ./",
     "test": "jasmine"
   },
   "devDependencies": {
