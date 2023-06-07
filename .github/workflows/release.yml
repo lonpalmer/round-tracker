@@ -21,37 +21,19 @@ jobs:
         run: npm run build
       - name: Zip dist directory
         run: zip -r dist.zip dist
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Create a release for this specific version
+      - name: Update Release with Files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: v${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this release:
-            - ...
+          name: ${{ github.event.release.name }}
+          # tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
           draft: false
           prerelease: false
-      - name: Upload release assets
-        id: upload-release-assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: |
+          artifacts: |
             dist.zip
+            dist/module.json
             LICENSE
-            module.json
-          asset_name: |
-            dist.zip
-            LICENSE
-            module.json
-          asset_content_type: |
-            application/zip
-            text/plain
-            application/json
-      - name: Clean up
-        run: rm dist.zip LICENSE
+            README.md
+          token: ${{ secrets.GITHUB_TOKEN }}
