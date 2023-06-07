@@ -7,7 +7,7 @@ import * as fs from "fs/promises";
 const watch = process.argv.includes("--watch");
 
 // use fs to delete all the files in the dist folder
-await fs.rm("dist/*", { recursive: true, force: true });
+// await fs.rm("dist/*", { recursive: true, force: true });
 
 const options = {
   entryPoints: ["src/main.mjs"],
