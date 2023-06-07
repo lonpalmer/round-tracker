@@ -21,8 +21,6 @@ jobs:
         run: npm run build
       - name: Zip dist directory
         run: zip -r dist.zip dist
-      - name: Copy LICENSE file
-        run: cp LICENSE dist.zip .
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
