@@ -40,6 +40,7 @@ async function setEvents(events, document) {
  * This returns a *copy* of the events for the given CombatDocument.
  *
  * @param {Object} document The document containing the events.
+ * @returns {RoundEvent[]} A shallow copy of the events for the given CombatDocument.
  */
 export function listEvents(document) {
   let events = getEvents(document);
