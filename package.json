@@ -1,5 +1,5 @@
 {
-  "version": "0.0.16",
+  "version": "0.0.17",
   "dependencies": {
     "esbuild": "0.17.19",
     "mkdirp": "^3.0.1",
