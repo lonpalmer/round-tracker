@@ -10,7 +10,8 @@
     "start": "node scripts/build.mjs --watch",
     "prettier:write": "prettier --write ./",
     "prettier:check": "prettier --check ./",
-    "test": "jasmine"
+    "test": "jasmine",
+    "full-build": "npm run prettier:write && npm run build && npm run test"
   },
   "devDependencies": {
     "eslint": "^8.42.0",
