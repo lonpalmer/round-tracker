@@ -12,8 +12,10 @@ Hooks.on("combatStart", (combat, updateData) => {
 });
 
 Hooks.on("combatRound", (combat, updateData, updateOptions) => {
-  fireEvents(combat.current.round, combat).then((events) => {
-    printFiredEventsInChat(events);
+  fireEvents(updateData.round, combat).then((events) => {
+    if (events.length > 0) {
+      printFiredEventsInChat(events);
+    }
   });
 });
 
