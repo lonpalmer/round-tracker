@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
+import { log } from "./logger.mjs";
 
 /**
  * Round events tracking.
  */
 
-const SCOPE = "round_events";
+const SCOPE = "round-tracker";
 const EVENTS_KEY = "events";
 
 /**
@@ -14,6 +15,11 @@ const EVENTS_KEY = "events";
  * @property {number} round The round number of the event.
  * @property {string} text Text to put into chat when this event occurs.
  */
+
+
+export function onNewCombat(combat) {
+  combat.setFlag(SCOPE, EVENTS_KEY, []);
+}
 
 /**
  * Gets the events for the given CombatDocument.
@@ -74,18 +80,26 @@ export async function addEvent(round, text, document) {
 }
 
 export function findEvents(round, fired, document) {
-  return getEvents(document).filter(
-    (event) => event.round === round && event.fired === fired
-  );
+  const events = getEvents(document);
+  log(`Document has ${events.length} events.`);
+  const filtered = events.filter((event) => event.round === round && event.fired === fired);
+  log(`Found ${filtered.length} events.`);
+  return filtered;
 }
 
 export async function fireEvents(round, document) {
-  const events = findEvents(round, false, document);
-  for (const event of events) {
+  log(`Firing events for round ${round}.`);
+
+  const events = getEvents(document);
+  
+  const toFire = events.filter((event) => event.round === round && !event.fired);
+
+  toFire.forEach((event) => {
     event.fired = true;
-  }
+  });
+
   await setEvents(events, document);
-  return events;
+  return toFire;
 }
 
 /**
