@@ -11,23 +11,14 @@ Hooks.on("combatStart", (combat, updateData) => {
   onNewCombat(combat);
 });
 
-
-Hooks.on("combatRound", (combat, updateData, updateOptions ) => {
-
-  fireEvents(combat.current.round, combat)
-    .then((events) => {
-      printFiredEventsInChat(events);
-    });
-  
-
+Hooks.on("combatRound", (combat, updateData, updateOptions) => {
+  fireEvents(combat.current.round, combat).then((events) => {
+    printFiredEventsInChat(events);
+  });
 });
 
-
-
 Hooks.on("chatMessage", (chatLog, message, chatData) => {
-
-  if(scanMessage(message)) {
+  if (scanMessage(message)) {
     return false;
   }
-
 });

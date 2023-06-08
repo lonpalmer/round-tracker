@@ -16,7 +16,6 @@ const EVENTS_KEY = "events";
  * @property {string} text Text to put into chat when this event occurs.
  */
 
-
 export function onNewCombat(combat) {
   combat.setFlag(SCOPE, EVENTS_KEY, []);
 }
@@ -65,6 +64,23 @@ export function listEvents(document) {
  * @returns {RoundEvent[]} Updated list of events for the current combat document.
  */
 export async function addEvent(round, text, document) {
+  // make the round a number if it isn't already one.
+  round = Number(round);
+
+  if (isNaN(round)) {
+    throw new Error(
+      "Round must be a number greater than the current combat round."
+    );
+  }
+
+  if (!text || text.length === 0) {
+    throw new Error("Text must not be empty.");
+  }
+
+  if (!document) {
+    throw new Error("Document must not be empty.");
+  }
+
   const event = {
     id: uuidv4(),
     fired: false,
@@ -81,24 +97,44 @@ export async function addEvent(round, text, document) {
 
 export function findEvents(round, fired, document) {
   const events = getEvents(document);
-  log(`Document has ${events.length} events.`);
-  const filtered = events.filter((event) => event.round === round && event.fired === fired);
-  log(`Found ${filtered.length} events.`);
+  const filtered = events.filter(
+    (event) => event.round === round && event.fired === fired
+  );
   return filtered;
 }
 
 export async function fireEvents(round, document) {
   log(`Firing events for round ${round}.`);
 
+  // make sure the round is a number
+  round = Number(round);
+
+  if (isNaN(round)) {
+    throw new Error("Round must be a number.");
+  }
+
+  if (!document) {
+    throw new Error("Document must not be empty.");
+  }
+
   const events = getEvents(document);
-  
-  const toFire = events.filter((event) => event.round === round && !event.fired);
 
-  toFire.forEach((event) => {
-    event.fired = true;
-  });
+  if (!events) {
+    throw new Error("Events are missing from the provided document.");
+  }
 
-  await setEvents(events, document);
+  const toFire = events.filter(
+    (event) => event.round === round && !event.fired
+  );
+
+  if (toFire.length > 0) {
+    toFire.forEach((event) => {
+      event.fired = true;
+    });
+
+    await setEvents(events, document);
+  }
+
   return toFire;
 }
 
