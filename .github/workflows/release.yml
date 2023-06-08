@@ -30,7 +30,7 @@ jobs:
         id: create_version_release
         uses: ncipollo/release-action@v1
         with:
-          name: ${{ github.ref }}
+          name: ${{ github.ref_name }}
           # tag: ${{ github.event.release.tag_name }}
           # body: ${{ github.event.release.body }}
           draft: false
