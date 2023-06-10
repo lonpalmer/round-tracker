@@ -6,18 +6,23 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "start": "node scripts/build.mjs --watch",
+    "build": "concurrently \"node scripts/build.mjs\" \"npm run tailwind:build\"",
+    "start": "concurrently \"node scripts/build.mjs --watch\" \"npm run tailwind:watch\"",
     "prettier:write": "prettier --write ./",
     "prettier:check": "prettier --check ./",
     "test": "jasmine",
+    "tailwind:build": "npx tailwindcss -i ./input.css -o ./dist/styles/round-tracker.css",
+    "tailwind:watch": "npx tailwindcss -i ./input.css -o ./dist/styles/round-tracker.css --watch",
     "build:full": "npm run prettier:write && npm run build && npm run test"
   },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "fs-extra": "^11.1.1",
     "jasmine": "^5.0.0",
-    "prettier": "2.8.8"
+    "prettier": "2.8.8",
+    "tailwindcss": "^3.3.2"
   }
 }
