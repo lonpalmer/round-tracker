@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="88.789 122.216 222.445 222.004" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <style bx:fonts="Gideon Roman">@import url(https://fonts.googleapis.com/css2?family=Gideon+Roman%3Aital%2Cwght%400%2C400&amp;display=swap);</style>
+  </defs>
+  <path style="fill: rgb(255, 255, 255); stroke-width: 1.33488px; stroke: rgb(157, 157, 157);" transform="matrix(0.61873, 0.4296, -0.424906, 0.611969, -199.022552, -243.584793)" d="M 902.734 220.227 A 106.572 106.572 0 1 1 796.162 113.654 L 796.162 134.969 A 85.258 85.258 0 1 0 881.42 220.227 Z" bx:shape="pie 796.162 220.227 85.258 106.572 90 360 1@99d02a4e"/>
+  <rect x="164.199" y="35.414" width="37.565" height="11.825" style="stroke: rgb(157, 157, 157); fill: rgb(255, 255, 255);" rx="5.636" ry="5.636" transform="matrix(0.858848, 0.51223, -0.51223, 0.858848, 132.689362, 135.218689)"/>
+  <path d="M 613.742 96.374 L 644.891 137.583 L 582.593 137.583 L 613.742 96.374 Z" style="fill: rgb(255, 255, 255); stroke: rgb(157, 157, 157);" transform="matrix(-0.777008, 0.629491, -0.696809, -0.72247, 804.296143, -119.633415)" bx:shape="triangle 582.593 96.374 62.298 41.209 0.5 0 1@f9512007" bx:origin="1.72 -0.239"/>
+  <rect x="164.199" y="35.414" width="37.565" height="11.825" style="stroke: rgb(157, 157, 157); fill: rgb(255, 255, 255);" rx="5.636" ry="5.636" transform="matrix(0.668562, 0.743656, -0.743656, 0.668562, 158.905472, 124.455231)"/>
+  <rect x="164.199" y="35.414" width="37.565" height="11.825" style="stroke: rgb(157, 157, 157); fill: rgb(255, 255, 255);" rx="5.636" ry="5.636" transform="matrix(0.401895, 0.915686, -0.915686, 0.401895, 190.91095, 114.680878)"/>
+  <rect x="164.199" y="35.414" width="37.565" height="11.825" style="stroke: rgb(157, 157, 157); fill: rgb(255, 255, 255);" rx="5.636" ry="5.636" transform="matrix(0.003271, 0.999995, -0.999995, 0.003271, 239.045471, 121.095619)"/>
+  <text style="fill: rgb(237, 237, 237); font-family: &quot;Gideon Roman&quot;; font-size: 86.4px; font-weight: 700; letter-spacing: 4.6px; stroke-width: 0.1px; white-space: pre;" x="144.138" y="260.782">RT</text>
+</svg>
