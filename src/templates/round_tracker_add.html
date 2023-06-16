@@ -91,7 +91,6 @@
           btn.removeClass("opacity-100").addClass("opacity-40");
         }
       }
-
     </script>
     <form id="round-tracker-form">
       <div id="round-tracker-add" class="flex-col m-2 gap-1 text-gray-700">
@@ -101,14 +100,12 @@
           <div class="flex flex-col shrink">
             <div class="text-sm font-semibold">Round (+/n)</div>
             <input
-              
               id="round-tracker-round-input"
               name="round"
               type="text"
               class="rounded-md border border-gray-700 w-24 text-center p-1 text-sm invalid:border-red-500 peer"
-              required 
+              required
               pattern="^(\+)?\d+"
-              
             />
           </div>
           <div class="flex flex-col grow">
@@ -177,9 +174,12 @@
                       alt="round-tracker"
                       class="w-full h-full"
                     />
-                    
                   </div>
-                  <div class="invisible peer-hover:visible text-xs overflow-clip overflow-ellipsis text-center">name</div>
+                  <div
+                    class="invisible peer-hover:visible text-xs overflow-clip overflow-ellipsis text-center"
+                  >
+                    name
+                  </div>
                 </div>
                 <div
                   class="w-8 h-8 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
@@ -219,7 +219,7 @@
                   onclick="roundTrackerStatusDropdownToggle()"
                 ></i>
               </div>
-              <div class="text-sm font-semibold w-full ">Status Effects</div>
+              <div class="text-sm font-semibold w-full">Status Effects</div>
             </div>
             <div
               id="round-tracker-add-status-list"
