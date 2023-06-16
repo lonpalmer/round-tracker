@@ -91,28 +91,33 @@
           btn.removeClass("opacity-100").addClass("opacity-40");
         }
       }
+
     </script>
     <form id="round-tracker-form">
-      <div id="round-tracker-add" class="flex flex-col m-2 gap-1 text-gray-700">
+      <div id="round-tracker-add" class="flex-col m-2 gap-1 text-gray-700">
         <!-- Create a form for round event entry showing the round entry box and the text box for the event description -->
 
         <div class="flex flex-row gap-2">
           <div class="flex flex-col shrink">
-            <div class="text-lg font-semibold">Round (+r | r)</div>
+            <div class="text-sm font-semibold">Round (+/n)</div>
             <input
+              
               id="round-tracker-round-input"
               name="round"
               type="text"
-              class="rounded-md border border-gray-700"
+              class="rounded-md border border-gray-700 w-24 text-center p-1 text-sm invalid:border-red-500 peer"
+              required 
+              pattern="^(\+)?\d+"
+              
             />
           </div>
           <div class="flex flex-col grow">
-            <div class="text-lg font-semibold">Event</div>
+            <div class="text-sm font-semibold">Event</div>
             <input
               id="round-tracker-text-input"
               type="text"
               name="text"
-              class="rounded-md border border-gray-700"
+              class="rounded-md border border-gray-700 p-1 text-sm"
             />
           </div>
         </div>
@@ -154,16 +159,16 @@
                   onclick="roundTrackerCombatantsDropdownToggle()"
                 ></i>
               </div>
-              <div class="text-lg font-semibold pl-2">Add Combatants</div>
+              <div class="text-sm font-semibold pl-2">Combatants</div>
             </div>
             <!--Header showing the tokens and their artwork-->
             <div
               id="round-tracker-conbatants-list"
-              class="flex flex-row gap-2 overflow-x-auto items-center justify-start w-full rounded-lg border border-gray-700 p-2"
+              class="hidden flex-row gap-2 overflow-x-auto items-center justify-start w-full rounded-lg border border-gray-700 p-2"
             >
               <div class="flex flex-row gap-2">
                 <div
-                  class="w-16 h-16 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
+                  class="w-8 h-8 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
                   onclick="roundTrackerToggleCombatant(1, this)"
                 >
                   <img
@@ -173,7 +178,7 @@
                   />
                 </div>
                 <div
-                  class="w-16 h-16 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
+                  class="w-8 h-8 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
                   onclick="roundTrackerToggleCombatant(2, this)"
                 >
                   <img
@@ -183,7 +188,7 @@
                   />
                 </div>
                 <div
-                  class="w-16 h-16 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
+                  class="w-8 h-8 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
                   onclick="roundTrackerToggleCombatant(3, this)"
                 >
                   <img
@@ -210,11 +215,11 @@
                   onclick="roundTrackerStatusDropdownToggle()"
                 ></i>
               </div>
-              <div class="text-lg font-bold w-full pl-2">Track Status</div>
+              <div class="text-sm font-bold w-full ">Status Effects</div>
             </div>
             <div
               id="round-tracker-add-status-list"
-              class="flex flex-row flex-wrap gap-2 rounded-lg p-2 border border-gray-700 w-full"
+              class="hidden flex-row flex-wrap gap-2 rounded-lg p-2 border border-gray-700 w-full"
             >
               <div
                 class="flex flex-col items-center justify-center align-middle"
@@ -225,7 +230,7 @@
                 >
                   <div>S</div>
                 </div>
-                
+
                 <div
                   class="invisible peer-hover:visible text-gray-700 text-xs overflow-hidden"
                 >
