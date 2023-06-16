@@ -167,15 +167,19 @@
               class="hidden flex-row gap-2 overflow-x-auto items-center justify-start w-full rounded-lg border border-gray-700 p-2"
             >
               <div class="flex flex-row gap-2">
-                <div
-                  class="w-8 h-8 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
-                  onclick="roundTrackerToggleCombatant(1, this)"
-                >
-                  <img
-                    src="../img/round-tracker.svg"
-                    alt="round-tracker"
-                    class="w-full h-full"
-                  />
+                <div class="flex flex-col w-8 h-12 items-center justify-start">
+                  <div
+                    class="w-8 h-8 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer peer"
+                    onclick="roundTrackerToggleCombatant(1, this)"
+                  >
+                    <img
+                      src="../img/round-tracker.svg"
+                      alt="round-tracker"
+                      class="w-full h-full"
+                    />
+                    
+                  </div>
+                  <div class="invisible peer-hover:visible text-xs overflow-clip overflow-ellipsis text-center">name</div>
                 </div>
                 <div
                   class="w-8 h-8 rounded-full border-2 bg-black opacity-40 hover:opacity-100 cursor-pointer"
@@ -215,7 +219,7 @@
                   onclick="roundTrackerStatusDropdownToggle()"
                 ></i>
               </div>
-              <div class="text-sm font-bold w-full ">Status Effects</div>
+              <div class="text-sm font-semibold w-full ">Status Effects</div>
             </div>
             <div
               id="round-tracker-add-status-list"
