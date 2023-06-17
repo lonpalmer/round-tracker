@@ -1,8 +1,12 @@
 import { addEvent } from "./round_events.mjs";
 import { log } from "./logger.mjs";
+import { showAddRoundEventForm } from "./foundry_app_interface.mjs";
 
 // RegEx which checks if a message starts with /rea then has a second argument which is a number or a number preceded by a + sign and the second argument is just text, numbers and punctuation.
 const addMessageRegex = /^\/rea\s(\+?\d+)\s(.*)$/;
+
+// RegEx which checks if a message is just /readd
+const adddMessageRegexUi = /^\/readd$/;
 
 export function scanMessage(message) {
   let parts;
@@ -12,6 +16,17 @@ export function scanMessage(message) {
     log("Message matches /rea");
     return slashAdd(parts);
   }
+
+  parts = message.match(adddMessageRegexUi);
+  if (parts) {
+    log("Message matches /readd");
+    return slashAddUi();
+  }
+}
+
+export function slashAddUi() {
+  showAddRoundEventForm(game.combat);
+  return true;
 }
 
 export async function slashAdd(parts) {
