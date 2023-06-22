@@ -1,0 +1,66 @@
+
+
+<form>
+  <div class="flex-col m-2 gap-1 text-gray-700"> 
+    <!--Round and Text Input-->
+    <div class="flex flex-row gap-2">
+      <div class="flex flex-col shrink">
+        <div class="text-sm font-semibold">Round (+/n)</div>
+        <input
+          name="round"
+          type="text"
+          class="rounded-md border border-gray-700 w-24 text-center p-1 text-sm invalid:border-red-500 peer"
+          required
+          pattern="^(\+)?\d+"
+          {{#if roundEvent}}
+          value="{{roundEvent.round}}"
+          {{/if}}
+        />
+      </div>
+      <div class="flex flex-col grow">
+        <div class="text-sm font-semibold">Event</div>
+        <input
+          type="text"
+          name="text"
+          class="rounded-md border border-gray-700 p-1 text-sm"
+          required
+          {{#if roundEvent}}
+          value="{{roundEvent.text}}"
+          {{/if}}
+        />
+      </div>
+    </div>
+
+    <!--Round and Text Input End-->
+
+
+    <!--List of the Combatants-->
+
+    <div id="combatants-list-section-{{_ID}}">
+
+    </div>
+
+    <!--List of the Combatants End-->
+
+    <!--List of Effects-->
+    <div id="effects-list-section-{{_ID}}">
+
+    </div>
+    
+    <div class="flex flex-row justify-end gap-2">
+      <button
+        id="round-tracker-reset-btn-{{_ID}}"
+        type="cancel"
+        class="rounded-md border border-gray-700 p-1 text-sm"
+      >
+        Cancel
+      </button>
+      <button
+        id="round-tracker-add-btn-{{_ID}}"
+        type="submit"
+        class="rounded-md border border-gray-700 p-1 text-sm"
+      >
+        Add
+      </button>
+    </div>
+</form>
