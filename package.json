@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "concurrently \"node scripts/build.mjs\" \"npm run tailwind:build\"",
-    "start": "concurrently \"node scripts/build.mjs --watch\" \"npm run tailwind:watch\"",
+    "watch": "concurrently \"node scripts/build.mjs --watch\" \"npm run tailwind:watch\"",
     "prettier:write": "prettier --write ./",
     "prettier:check": "prettier --check ./",
     "test": "jasmine",
