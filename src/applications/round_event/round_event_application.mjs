@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from "uuid";
  * @property {Object} token - Foundry Token object. The token for the combatant.
  */
 
-
 /**
  * Foundry Application for adding or editing a round event.
  */
@@ -37,7 +36,7 @@ class RoundEventForm extends FormApplication {
       id: "round-event-form",
       title: "Round Event",
       template:
-        "modules/round-tracker/applications/round_event/round_tracker_add.hbs",
+        "modules/round-tracker/applications/round_event/round_event_template.hbs",
       classes: [],
       popOut: true,
       width: 400,

@@ -1,6 +1,6 @@
 import { addEvent } from "./round_events.mjs";
 import { log } from "./logger.mjs";
-import { showAddRoundEventForm } from "./applications/round_event/foundry_app_interface.mjs";
+import { showAddRoundEventForm } from "./applications/round_event/round_event_application.mjs";
 
 // RegEx which checks if a message starts with /rea then has a second argument which is a number or a number preceded by a + sign and the second argument is just text, numbers and punctuation.
 const addMessageRegex = /^\/rea\s(\+?\d+)\s(.*)$/;
