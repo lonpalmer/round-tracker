@@ -1,7 +1,27 @@
 import { addEvent, RoundEvent, removeEvent } from "../../round_events.mjs";
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * @typedef {Mob} Mob - A combatant in the combat which adds in information about the token.
+ * @property {string} id - The ID of the combatant.
+ * @property {string} name - The name of the combatant.
+ * @property {string} actorId - The ID of the actor for the combatant.
+ * @property {string} linkedActorId - The ID of the linked actor for the combatant.
+ * @property {Object} token - Foundry Token object. The token for the combatant.
+ */
+
+
+/**
+ * Foundry Application for adding or editing a round event.
+ */
 class RoundEventForm extends FormApplication {
+  /**
+   *
+   * @param {Object} combatDoc Foundry Combat document.
+   * @param {Array.<Object>} effects List of all possible foundry status effects.
+   * @param {Array.<Mob>} mobs List of all combatants in the combat along with their token.
+   * @param {RoundEvent} roundEvent Round event to edit. If null, then a new round event is created.
+   */
   constructor(combatDoc, effects, mobs, roundEvent) {
     super();
 
@@ -40,6 +60,10 @@ class RoundEventForm extends FormApplication {
     html
       .find(this.TID("combatants-list-section"))
       .append(this.makeCombatantList());
+
+    html
+      .find(this.TID("status-effects-list-section"))
+      .append(this.makeStatusEffectList());
   }
 
   /**
@@ -55,7 +79,7 @@ class RoundEventForm extends FormApplication {
   }
 
   /**
-   *
+   * Create the sleect list and the buttons for the combatants.
    * @returns {JQuery} JQuery object containing the HTML for the combatant list.
    */
   makeCombatantList() {
@@ -64,7 +88,8 @@ class RoundEventForm extends FormApplication {
     const buttonList = this.mobs.map((mob) => {
       selectTag.append($("<option>").val(mob.id).text(mob.id));
 
-      let button = $(`<div class="flex flex-col w-8 h-12 gap-0">
+      let button = $(`
+        <div class="flex flex-col w-8 h-12 gap-0">
             <button class="w-8 h-8 border-0 rounded-full bg-black opacity-40 hover:opacity-100 cursor-pointer peer">
                 <img class="border-0" src="${mob.token.texture.src}" alt="round-tracker" class="w-8 h-8" />
             </button>
@@ -74,7 +99,6 @@ class RoundEventForm extends FormApplication {
         </div>`);
 
       button.on("click", (event) => {
-        // option.attr("selected", !option.attr("selected"));
         let value = !selectTag.options[mob.id].selected;
         selectTag.options[mob.id].selected = value;
 
@@ -88,18 +112,15 @@ class RoundEventForm extends FormApplication {
       return button;
     });
 
-    let combatantsBlockStr = `<div>
-      <label for='hidden-combatants-select' class="flex flex-row gap-1 justify-start items-center"><i class="fa-solid fa-caret-right"></i><span class="text-sm font-semibold">Combatants</span></label>
-      
-      <input name='hidden-combatants-select' type="checkbox" class="hidden" />
-      
-      <div class="hidden flex-row flex-wrap gap-2 p-2 border border-gray-700 w-full">
-          
+    let combatantsBlock = $(`
+      <div>
+        <label for='hidden-combatants-select' class="flex flex-row gap-1 justify-start items-center"><i class="fa-solid fa-caret-right"></i><span class="text-sm font-semibold">Combatants</span></label>
+        <input name='hidden-combatants-select' type="checkbox" class="hidden" />
+        <div class="hidden flex-row flex-wrap gap-2 p-2 border border-gray-700 w-full">
+        </div>
       </div>
-    </div>
-    `;
+    `);
 
-    let combatantsBlock = $(combatantsBlockStr);
     let label = combatantsBlock.find("label");
     let icon = combatantsBlock.find("label i");
     let checkbox = combatantsBlock.find("input");
@@ -124,124 +145,76 @@ class RoundEventForm extends FormApplication {
     return combatantsBlock;
   }
 
-  makeStatusEffectsList() {
-    let statusEffects = this.statusEffects;
+  /**
+   * Make the select list and buttons for the status effects.
+   * @returns {JQuery} JQuery object containing the HTML for the status effect list.
+   */
+  makeStatusEffectList() {
+    let statusEffects = this.effects;
+    let selectTag = $(
+      "<select class='hidden' name ='status-effects' multiple>"
+    );
 
-    const list = statusEffects.map((effect) => {
-      let option = $(`<option value="${effect.id}">${effect.id}</option>`);
-      let button = $(`<div class="flex flex-col w-8 h-10 gap-0">
+    const buttonList = statusEffects.map((effect) => {
+      selectTag.append($("<option>").val(effect.id).text(effect.id));
+      let button = $(`
+        <div class="flex flex-col w-8 h-12 gap-0">
             <button class="w-8 h-8 border-0 rounded-full bg-gray-700 opacity-40 hover:opacity-100 cursor-pointer peer">
                 <img class="border-0" src="${effect.icon}" alt="round-tracker" class="w-8 h-8" />
             </button>
             <div class="invisible peer-hover:visible text-xs overflow-clip overflow-ellipsis text-center">
-                ${effect.name} 
+                ${effect.name}
             </div>
-        </div>`);
+        </div>
+      `);
 
-      button.click((event) => {
-        option.attr("selected", !option.attr("selected"));
-        if (option.attr("selected")) {
+      button.on("click", (event) => {
+        let value = !selectTag.options[effect.id].selected;
+        selectTag.options[effect.id].selected = value;
+
+        if (value) {
           button.removeClass("opacity-40").addClass("opacity-100");
         } else {
           button.removeClass("opacity-100").addClass("opacity-40");
         }
       });
 
-      return { option: option, button: button };
+      return button;
     });
 
-    return list;
+    let statusEffectsBlock = $(`
+      <div>
+        <label for='hidden-status-effects-select' class="flex flex-row gap-1 justify-start items-center">
+          <i class="fa-solid fa-caret-right"></i>
+          <span class="text-sm font-semibold">Status Effects</span>
+        </label>
+        <input name='hidden-status-effects-select' type="checkbox" class="hidden" />
+        <div class="hidden flex-row flex-wrap gap-2 p-2 border border-gray-700 w-full">
+        </div>
+      </div>
+    `);
+
+    let label = statusEffectsBlock.find("label");
+    let icon = statusEffectsBlock.find("label i");
+    let checkbox = statusEffectsBlock.find("input");
+    let statusEffectsList = statusEffectsBlock.find("div");
+
+    label.on("click", (event) => {
+      checkbox.prop("checked", !checkbox.prop("checked"));
+
+      if (checkbox.prop("checked")) {
+        icon.removeClass("fa-caret-right").addClass("fa-caret-down");
+        statusEffectsList.removeClass("hidden").addClass("flex");
+      } else {
+        icon.removeClass("fa-caret-down").addClass("fa-caret-right");
+        statusEffectsList.removeClass("flex").addClass("hidden");
+      }
+    });
+
+    statusEffectsList.append(buttonList);
+
+    return statusEffectsBlock;
   }
-
-  // activateListeners(html) {
-  //   super.activateListeners(html);
-
-  //   // Dropdown for combatants
-  //   let id = `#${TOID("round-tracker-combatants-dropdown")}`;
-  //   html.find(id).click(this.roundTrackerCombatantsDropdownToggle);
-
-  //   // Dropdown for status
-  //   id = `#${TOID("round-tracker-status-dropdown")}`;
-  //   html.find(id).click(this.roundTrackerStatusDropdownToggle);
-
-  //   // Add combatant button
-  //   id = `#${TOID("round-tracker-add-combatant")}`;
-  //   html.find(id).click(this.roundTrackerToggleCombatant);
-
-  //   // Add status button
-  //   id = `#${TOID("round-tracker-add-status")}`;
-  //   html.find(id).click(this.roundTrackerToggleStatus);
-
-  // }
-
-  // // Form control  functions.
-  // roundTrackerDropdownToggle(toggleCheckbox, dropdownIcon, list) {
-  //   toggleCheckbox.prop("checked", !toggleCheckbox.prop("checked"));
-
-  //   if (toggleCheckbox.prop("checked")) {
-  //     dropdownIcon.removeClass("fa-caret-right").addClass("fa-caret-down");
-  //     list.removeClass("hidden").addClass("flex");
-  //   } else {
-  //     dropdownIcon.removeClass("fa-caret-down").addClass("fa-caret-right");
-  //     list.removeClass("flex").addClass("hidden");
-  //   }
-  // }
-
-  // roundTrackerCombatantsDropdownToggle() {
-  //   let toggleCheckbox = $("#round-tracker-add-toggle");
-  //   let dropdownIcon = $("#round-tracker-combatants-dropdown");
-  //   let combatantsList = $("#round-tracker-conbatants-list");
-
-  //   roundTrackerDropdownToggle(toggleCheckbox, dropdownIcon, combatantsList);
-  // }
-
-  // roundTrackerStatusDropdownToggle() {
-  //   let toggleCheckbox = $("#round-tracker-add-status-toggle");
-  //   let dropdownIcon = $("#round-tracker-add-status-dropdown");
-  //   let statusList = $("#round-tracker-add-status-list");
-
-  //   roundTrackerDropdownToggle(toggleCheckbox, dropdownIcon, statusList);
-  //   this.setPosition({height:"auto"});
-  // }
-
-  // roundTrackerToggleCombatant(combatantId, button) {
-  //   let btn = $(button);
-
-  //   //find the value in the select input with the id round-tracker-select-combatants that matches the combatantId
-  //   let combatant = $("#round-tracker-select-combatants")
-  //     .find(`option[value=${combatantId}]`)
-  //     .first();
-
-  //   // toggle the selected prop on combatant
-  //   combatant.attr("selected", !combatant.attr("selected"));
-
-  //   // set the opacity on the btn based on the combatant selected prop
-  //   if (combatant.attr("selected")) {
-  //     btn.removeClass("opacity-40").addClass("opacity-100");
-  //   } else {
-  //     btn.removeClass("opacity-100").addClass("opacity-40");
-  //   }
-  // }
-
-  // roundTrackerToggleStatus(status, button) {
-  //   let btn = $(button);
-
-  //   //find the value in the select input with the id round-tracker-select-status that matches the status
-  //   let statusOption = $("#round-tracker-select-status")
-  //     .find(`option[value=${status}]`)
-  //     .first();
-
-  //   // toggle the selected prop on statusOption
-  //   statusOption.attr("selected", !statusOption.attr("selected"));
-
-  //   // set the opacity on the btn based on the statusOption selected prop
-  //   if (statusOption.attr("selected")) {
-  //     btn.removeClass("opacity-40").addClass("opacity-100");
-  //   } else {
-  //     btn.removeClass("opacity-100").addClass("opacity-40");
-  //   }
-  // }
-  // end form control functions.
 
   async _updateObject(event, formData) {
     let doc = game.combat.current;
@@ -268,8 +241,6 @@ class RoundEventForm extends FormApplication {
 }
 
 function displayRoundEventForm(combatDoc, roundEvent) {
-  // game.scenes.get(combat.sceneId).tokens.get(combatant.tokenId)
-
   let scene = combatDoc.scene;
   let effects = CONFIG.statusEffects.map((effect) => {
     return {
