@@ -15,7 +15,6 @@ import { v4 as uuidv4 } from "uuid";
  */
 class RoundEventForm extends FormApplication {
   /**
-   *
    * @param {Object} combatDoc Foundry Combat document.
    * @param {Array.<Object>} effects List of all possible foundry status effects.
    * @param {Array.<Mob>} mobs List of all combatants in the combat along with their token.
@@ -63,6 +62,19 @@ class RoundEventForm extends FormApplication {
     html
       .find(this.TID("status-effects-list-section"))
       .append(this.makeStatusEffectList());
+
+    let roundInput = html.find('input[name="round"]');
+    let textInput = html.find('input[name="text"]');
+
+    roundInput.on("focus", (event) => {
+      roundInput.select();
+    });
+
+    textInput.on("focus", (event) => {
+      textInput.select();
+    });
+
+    roundInput.trigger("focus");
   }
 
   /**
@@ -88,23 +100,24 @@ class RoundEventForm extends FormApplication {
       selectTag.append($("<option>").val(mob.id).text(mob.id));
 
       let button = $(`
-        <div class="flex flex-col w-8 h-12 gap-0">
-            <button class="w-8 h-8 border-0 rounded-full bg-black opacity-40 hover:opacity-100 cursor-pointer peer">
-                <img class="border-0" src="${mob.token.texture.src}" alt="round-tracker" class="w-8 h-8" />
-            </button>
-            <div class="invisible peer-hover:visible text-xs overflow-clip overflow-ellipsis text-center">
+        <div class="flex flex-col justify-center items-center w-16 h-20 gap-0">
+            <div class="flex justify-center items-center w-16 h-16 border-0 rounded-full bg-gray-700 cursor-pointer overflow-clip peer">
+                <img class="border-0 w-16 h-16 opacity-40" src="${mob.token.texture.src}" alt="round-tracker" />
+            </div>
+            <div class="text-md overflow-clip overflow-ellipsis text-center">
                 ${mob.name} 
             </div>
         </div>`);
 
       button.on("click", (event) => {
-        let value = !selectTag.options[mob.id].selected;
-        selectTag.options[mob.id].selected = value;
+        let option = selectTag.find(`option[value='${mob.id}']`);
+        let value = !option.prop("selected");
+        option.prop("selected", value);
 
         if (value) {
-          button.removeClass("opacity-40").addClass("opacity-100");
+          button.find('img').removeClass("opacity-40").addClass("opacity-100");
         } else {
-          button.removeClass("opacity-100").addClass("opacity-40");
+          button.find('img').removeClass("opacity-100").addClass("opacity-40");
         }
       });
 
@@ -137,6 +150,8 @@ class RoundEventForm extends FormApplication {
         icon.removeClass("fa-caret-down").addClass("fa-caret-right");
         combatantsList.removeClass("flex").addClass("hidden");
       }
+
+      this.setPosition({ height: "auto" });
     });
 
     combatantsList.append(buttonList);
@@ -157,24 +172,25 @@ class RoundEventForm extends FormApplication {
     const buttonList = statusEffects.map((effect) => {
       selectTag.append($("<option>").val(effect.id).text(effect.id));
       let button = $(`
-        <div class="flex flex-col w-8 h-12 gap-0">
-            <button class="w-8 h-8 border-0 rounded-full bg-gray-700 opacity-40 hover:opacity-100 cursor-pointer peer">
-                <img class="border-0" src="${effect.icon}" alt="round-tracker" class="w-8 h-8" />
-            </button>
-            <div class="invisible peer-hover:visible text-xs overflow-clip overflow-ellipsis text-center">
-                ${effect.name}
+        <div class="flex flex-col justify-center items-center w-8 h-10 gap-0">
+            <div class="w-8 h-8 border-0 rounded-full bg-gray-700 cursor-pointer peer flex justify-center items-center">
+                <img class="w-8 h-8 border-0 opacity-40" src="${effect.icon}" alt="round-tracker" />
+            </div>
+            <div class="invisible peer-hover:visible text-xs text-center">
+                ${effect.id}
             </div>
         </div>
       `);
 
       button.on("click", (event) => {
-        let value = !selectTag.options[effect.id].selected;
-        selectTag.options[effect.id].selected = value;
+        let opt = selectTag.find(`option[value='${effect.id}']`);
+        let value = !opt.prop("selected");
+        opt.prop("selected", value);
 
         if (value) {
-          button.removeClass("opacity-40").addClass("opacity-100");
+          button.find('img').removeClass("opacity-40").addClass("opacity-100");
         } else {
-          button.removeClass("opacity-100").addClass("opacity-40");
+          button.find('img').removeClass("opacity-100").addClass("opacity-40");
         }
       });
 
@@ -208,6 +224,8 @@ class RoundEventForm extends FormApplication {
         icon.removeClass("fa-caret-down").addClass("fa-caret-right");
         statusEffectsList.removeClass("flex").addClass("hidden");
       }
+
+      this.setPosition({ height: "auto" });
     });
 
     statusEffectsList.append(buttonList);
@@ -216,7 +234,7 @@ class RoundEventForm extends FormApplication {
   }
 
   async _updateObject(event, formData) {
-    let doc = game.combat.current;
+    let doc = game.combat;
     let roundText = formData["round"];
 
     let round = 0;
