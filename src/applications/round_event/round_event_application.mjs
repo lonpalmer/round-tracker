@@ -115,9 +115,9 @@ class RoundEventForm extends FormApplication {
         option.prop("selected", value);
 
         if (value) {
-          button.find('img').removeClass("opacity-40").addClass("opacity-100");
+          button.find("img").removeClass("opacity-40").addClass("opacity-100");
         } else {
-          button.find('img').removeClass("opacity-100").addClass("opacity-40");
+          button.find("img").removeClass("opacity-100").addClass("opacity-40");
         }
       });
 
@@ -188,9 +188,9 @@ class RoundEventForm extends FormApplication {
         opt.prop("selected", value);
 
         if (value) {
-          button.find('img').removeClass("opacity-40").addClass("opacity-100");
+          button.find("img").removeClass("opacity-40").addClass("opacity-100");
         } else {
-          button.find('img').removeClass("opacity-100").addClass("opacity-40");
+          button.find("img").removeClass("opacity-100").addClass("opacity-40");
         }
       });
 
