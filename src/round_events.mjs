@@ -14,6 +14,8 @@ const EVENTS_KEY = "events";
  * @property {boolean} fired Whether the event has fired.
  * @property {number} round The round number of the event.
  * @property {string} text Text to put into chat when this event occurs.
+ * @property {Array.<string>} combatants The combatant IDs that are involved in this event.
+ * @property {Array.<string>} effects The effect IDs that are applied to the combatants.
  */
 
 export function onNewCombat(combat) {
@@ -63,7 +65,7 @@ export function listEvents(document) {
  * @param {Object} document The document containing the events.
  * @returns {RoundEvent[]} Updated list of events for the current combat document.
  */
-export async function addEvent(round, text, document) {
+export async function addEvent(round, text, document, combatants, effects) {
   // make the round a number if it isn't already one.
   round = Number(round);
 
@@ -81,11 +83,21 @@ export async function addEvent(round, text, document) {
     throw new Error("Document must not be empty.");
   }
 
+  if(!combatants) {
+    combatants = [];
+  }
+
+  if(!effects) {
+    effects = [];
+  }
+
   const event = {
     id: uuidv4(),
     fired: false,
     round,
     text,
+    combatants,
+    effects,
   };
 
   const events = getEvents(document);
