@@ -63,6 +63,8 @@ export function listEvents(document) {
  * @param {number} round Round to fire the event
  * @param {string} text Text to put into chat when this event occurs.
  * @param {Object} document The document containing the events.
+ * @param {Array.<string>} combatants The combatant IDs that are involved in this event.
+ * @param {Array.<string>} effects The effect IDs that are applied to the combatants.
  * @returns {RoundEvent[]} Updated list of events for the current combat document.
  */
 export async function addEvent(round, text, document, combatants, effects) {
@@ -83,11 +85,11 @@ export async function addEvent(round, text, document, combatants, effects) {
     throw new Error("Document must not be empty.");
   }
 
-  if(!combatants) {
+  if (!combatants) {
     combatants = [];
   }
 
-  if(!effects) {
+  if (!effects) {
     effects = [];
   }
 
