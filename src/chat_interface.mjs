@@ -1,4 +1,4 @@
-import { addEvent } from "./round_events.mjs";
+import { addEvent, parseRoundInput } from "./round_events.mjs";
 import { log } from "./logger.mjs";
 import { showAddRoundEventForm } from "./applications/round_event/round_event_application.mjs";
 
@@ -30,25 +30,7 @@ export function slashAddUi() {
 }
 
 export async function slashAdd(parts) {
-  let round = parts[1];
-
-  if (round.startsWith("+")) {
-    round = round.substring(1);
-    try {
-      round = game.combat.current.round + Number(round);
-    } catch (e) {
-      // if e is due to game not being initialized then we can just use the round as a number.
-      log(
-        "game.combat.current.round is not a number.  Game is probably not initialized."
-      );
-      if (e instanceof ReferenceError) {
-        round = Number(round);
-      }
-    }
-  } else {
-    round = Number(round);
-  }
-
+  let round = parseRoundInput(parts[1], game.combat);
   let text = parts[2];
 
   let events = await addEvent(round, text, game.combat);

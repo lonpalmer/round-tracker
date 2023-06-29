@@ -183,3 +183,31 @@ export async function removeEvent(id, document) {
   }
   return true;
 }
+
+/**
+ * Takes the user input and returns the round number indicated or throws an error.
+ * @param {string} roundInput User input for the round
+ * @param {Object} combatDoc Foundry Combat Document
+ * @returns {number} The round number for this event.
+ */
+export function parseRoundInput(roundInput, combatDoc) {
+  let plus = false;
+  let round;
+
+  if (roundInput.startsWith("+")) {
+    plus = true;
+    round = Number(roundInput.substring(1));
+  } else {
+    round = Number(roundInput);
+  }
+
+  if (isNaN(round)) {
+    throw new Error("Round must be a number.");
+  }
+
+  if (plus) {
+    round += combatDoc.round;
+  }
+
+  return round;
+}

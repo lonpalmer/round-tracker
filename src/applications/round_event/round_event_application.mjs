@@ -1,4 +1,9 @@
-import { addEvent, RoundEvent, removeEvent } from "../../round_events.mjs";
+import {
+  addEvent,
+  RoundEvent,
+  removeEvent,
+  parseRoundInput,
+} from "../../round_events.mjs";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -236,15 +241,7 @@ class RoundEventForm extends FormApplication {
   }
 
   async _updateObject(event, formData) {
-    let roundText = formData["round"];
-
-    let round = 0;
-
-    if (roundText.startsWith("+")) {
-      round = game.combat.current.round + Number(roundText.substring(1));
-    } else {
-      round = Number(roundText);
-    }
+    let round = parseRoundInput(formData["round"], this.combatDoc);
 
     this.roundEvent.round = round;
     this.roundEvent.text = formData["text"].trim();
