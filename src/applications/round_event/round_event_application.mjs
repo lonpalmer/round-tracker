@@ -1,4 +1,9 @@
-import { addEvent, RoundEvent, removeEvent } from "../../round_events.mjs";
+import {
+  addEvent,
+  RoundEvent,
+  removeEvent,
+  parseRoundInput,
+} from "../../round_events.mjs";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -183,7 +188,7 @@ class RoundEventForm extends FormApplication {
       `);
 
       button.on("click", (event) => {
-        let opt = selectTag.find(`option[value='${effect.id}']`);
+        let opt = selectTag.find(`option[value="${effect.id}"]`);
         let value = !opt.prop("selected");
         opt.prop("selected", value);
 
@@ -214,6 +219,8 @@ class RoundEventForm extends FormApplication {
     let checkbox = statusEffectsBlock.find("input");
     let statusEffectsList = statusEffectsBlock.find("div");
 
+    statusEffectsBlock.append(selectTag);
+
     label.on("click", (event) => {
       checkbox.prop("checked", !checkbox.prop("checked"));
 
@@ -234,26 +241,30 @@ class RoundEventForm extends FormApplication {
   }
 
   async _updateObject(event, formData) {
-    let doc = game.combat;
-    let roundText = formData["round"];
-
-    let round = 0;
-
-    if (roundText.startsWith("+")) {
-      round = game.combat.current.round + Number(roundText.substring(1));
-    } else {
-      round = Number(roundText);
+    if (event.submitter.id.startsWith("round-tracker-reset-btn")) {
+      return;
     }
+
+    let round = parseRoundInput(formData["round"], this.combatDoc);
 
     this.roundEvent.round = round;
     this.roundEvent.text = formData["text"].trim();
+
+    this.combatants = formData["combatants"];
+    this.effects = formData["status-effects"];
 
     // If the round event has an id then we are updating an existing event.
     if (this.roundEvent.id) {
       await removeEvent(this.roundEvent.id, doc);
     }
 
-    await addEvent(this.roundEvent.round, this.roundEvent.text, doc);
+    await addEvent(
+      this.roundEvent.round,
+      this.roundEvent.text,
+      this.combatDoc,
+      this.combatants,
+      this.effects
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-import { addEvent } from "./round_events.mjs";
+import { addEvent, getEvents, parseRoundInput } from "./round_events.mjs";
 import { log } from "./logger.mjs";
 import { showAddRoundEventForm } from "./applications/round_event/round_event_application.mjs";
 
@@ -7,6 +7,9 @@ const addMessageRegex = /^\/rea\s(\+?\d+)\s(.*)$/;
 
 // RegEx which checks if a message is just /readd
 const adddMessageRegexUi = /^\/readd$/;
+
+// Regex which checks if a message is just /rels
+const listMessageRegex = /^\/rels$/;
 
 export function scanMessage(message) {
   let parts;
@@ -22,6 +25,12 @@ export function scanMessage(message) {
     log("Message matches /readd");
     return slashAddUi();
   }
+
+  parts = message.match(listMessageRegex);
+  if (parts) {
+    log("Message matches /rels");
+    return slashList();
+  }
 }
 
 export function slashAddUi() {
@@ -30,28 +39,16 @@ export function slashAddUi() {
 }
 
 export async function slashAdd(parts) {
-  let round = parts[1];
-
-  if (round.startsWith("+")) {
-    round = round.substring(1);
-    try {
-      round = game.combat.current.round + Number(round);
-    } catch (e) {
-      // if e is due to game not being initialized then we can just use the round as a number.
-      log(
-        "game.combat.current.round is not a number.  Game is probably not initialized."
-      );
-      if (e instanceof ReferenceError) {
-        round = Number(round);
-      }
-    }
-  } else {
-    round = Number(round);
-  }
-
+  let round = parseRoundInput(parts[1], game.combat);
   let text = parts[2];
 
   let events = await addEvent(round, text, game.combat);
+  printEventsInChat(events);
+  return true;
+}
+
+export function slashList() {
+  let events = getEvents(game.combat);
   printEventsInChat(events);
   return true;
 }

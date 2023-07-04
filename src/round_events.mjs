@@ -14,6 +14,8 @@ const EVENTS_KEY = "events";
  * @property {boolean} fired Whether the event has fired.
  * @property {number} round The round number of the event.
  * @property {string} text Text to put into chat when this event occurs.
+ * @property {Array.<string>} combatants The combatant IDs that are involved in this event.
+ * @property {Array.<string>} effects The effect IDs that are applied to the combatants.
  */
 
 export function onNewCombat(combat) {
@@ -26,7 +28,7 @@ export function onNewCombat(combat) {
  * @param {Object} document The document containing the events.
  * @returns {RoundEvent[]} The events for the given CombatDocument.
  */
-function getEvents(document) {
+export function getEvents(document) {
   return document.getFlag(SCOPE, EVENTS_KEY) || [];
 }
 
@@ -61,9 +63,11 @@ export function listEvents(document) {
  * @param {number} round Round to fire the event
  * @param {string} text Text to put into chat when this event occurs.
  * @param {Object} document The document containing the events.
+ * @param {Array.<string>} combatants The combatant IDs that are involved in this event.
+ * @param {Array.<string>} effects The effect IDs that are applied to the combatants.
  * @returns {RoundEvent[]} Updated list of events for the current combat document.
  */
-export async function addEvent(round, text, document) {
+export async function addEvent(round, text, document, combatants, effects) {
   // make the round a number if it isn't already one.
   round = Number(round);
 
@@ -81,11 +85,21 @@ export async function addEvent(round, text, document) {
     throw new Error("Document must not be empty.");
   }
 
+  if (!combatants) {
+    combatants = [];
+  }
+
+  if (!effects) {
+    effects = [];
+  }
+
   const event = {
     id: uuidv4(),
     fired: false,
     round,
     text,
+    combatants,
+    effects,
   };
 
   const events = getEvents(document);
@@ -168,4 +182,32 @@ export async function removeEvent(id, document) {
     await setEvents(events, document);
   }
   return true;
+}
+
+/**
+ * Takes the user input and returns the round number indicated or throws an error.
+ * @param {string} roundInput User input for the round
+ * @param {Object} combatDoc Foundry Combat Document
+ * @returns {number} The round number for this event.
+ */
+export function parseRoundInput(roundInput, combatDoc) {
+  let plus = false;
+  let round;
+
+  if (roundInput.startsWith("+")) {
+    plus = true;
+    round = Number(roundInput.substring(1));
+  } else {
+    round = Number(roundInput);
+  }
+
+  if (isNaN(round)) {
+    throw new Error("Round must be a number.");
+  }
+
+  if (plus) {
+    round += combatDoc.round;
+  }
+
+  return round;
 }
