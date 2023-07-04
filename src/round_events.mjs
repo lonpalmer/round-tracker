@@ -28,7 +28,7 @@ export function onNewCombat(combat) {
  * @param {Object} document The document containing the events.
  * @returns {RoundEvent[]} The events for the given CombatDocument.
  */
-function getEvents(document) {
+export function getEvents(document) {
   return document.getFlag(SCOPE, EVENTS_KEY) || [];
 }
 

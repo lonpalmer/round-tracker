@@ -241,6 +241,10 @@ class RoundEventForm extends FormApplication {
   }
 
   async _updateObject(event, formData) {
+    if (event.submitter.id.startsWith("round-tracker-reset-btn")) {
+      return;
+    }
+
     let round = parseRoundInput(formData["round"], this.combatDoc);
 
     this.roundEvent.round = round;

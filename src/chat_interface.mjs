@@ -1,4 +1,4 @@
-import { addEvent, parseRoundInput } from "./round_events.mjs";
+import { addEvent, getEvents, parseRoundInput } from "./round_events.mjs";
 import { log } from "./logger.mjs";
 import { showAddRoundEventForm } from "./applications/round_event/round_event_application.mjs";
 
@@ -7,6 +7,9 @@ const addMessageRegex = /^\/rea\s(\+?\d+)\s(.*)$/;
 
 // RegEx which checks if a message is just /readd
 const adddMessageRegexUi = /^\/readd$/;
+
+// Regex which checks if a message is just /rels
+const listMessageRegex = /^\/rels$/;
 
 export function scanMessage(message) {
   let parts;
@@ -22,6 +25,12 @@ export function scanMessage(message) {
     log("Message matches /readd");
     return slashAddUi();
   }
+
+  parts = message.match(listMessageRegex);
+  if (parts) {
+    log("Message matches /rels");
+    return slashList();
+  }
 }
 
 export function slashAddUi() {
@@ -34,6 +43,12 @@ export async function slashAdd(parts) {
   let text = parts[2];
 
   let events = await addEvent(round, text, game.combat);
+  printEventsInChat(events);
+  return true;
+}
+
+export function slashList() {
+  let events = getEvents(game.combat);
   printEventsInChat(events);
   return true;
 }
